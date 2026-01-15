@@ -3,165 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lexicon Universal - CapacitiumX</title>
+    <title>El Sabio - CapacitiumX</title>
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#0f172a">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/201/201818.png">
+    <meta name="theme-color" content="#1e3a8a">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4333/4333609.png">
 
     <script>
         const manifest = {
-            "name": "Lexicon Universal Pro",
-            "short_name": "Lexicon",
+            "name": "El Sabio CapacitiumX",
+            "short_name": "El Sabio",
             "start_url": "./",
             "display": "standalone",
-            "background_color": "#0f172a",
-            "theme_color": "#1e293b",
-            "icons": [{"src": "https://cdn-icons-png.flaticon.com/512/201/201818.png", "sizes": "512x512", "type": "image/png"}]
+            "background_color": "#f3f4f6",
+            "theme_color": "#1e3a8a",
+            "icons": [{"src": "https://cdn-icons-png.flaticon.com/512/4333/4333609.png", "sizes": "512x512", "type": "image/png"}]
         };
         const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
         document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(blob)}">`);
     </script>
 
     <style>
-        :root {
-            --aristocracy-blue: #0f172a;
-            --nobel-gold: #d4af37;
-            --academic-slate: #1e293b;
-            --ivory: #f8fafc;
-        }
+        :root { --primary: #1e3a8a; --bg: #f3f4f6; --chat-bg: #ffffff; --text: #1f2937; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; color: var(--text); }
 
-        body {
-            margin: 0; padding: 0;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            color: var(--ivory);
-            font-family: 'Georgia', serif;
-            display: flex; flex-direction: column;
-            height: 100vh; overflow: hidden;
-        }
+        /* Cabecera */
+        .header { background: var(--primary); color: white; padding: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; }
+        .header p { margin: 0; font-size: 0.7rem; opacity: 0.8; }
 
-        .header {
-            padding: 40px 20px; text-align: center;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-        }
+        /* Área de Chat */
+        #chat-box { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        
+        .bubble { max-width: 85%; padding: 12px 16px; border-radius: 18px; line-height: 1.4; font-size: 1rem; position: relative; animation: fadeIn 0.3s ease; }
+        .user { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 2px; }
+        .sage { align-self: flex-start; background: var(--chat-bg); color: var(--text); border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
 
-        .header h1 {
-            font-size: 2.2rem; letter-spacing: 4px; font-weight: 300;
-            color: var(--nobel-gold); margin: 0;
-            text-transform: uppercase;
-        }
+        /* Input Inferior */
+        .input-area { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #e5e7eb; }
+        input { flex: 1; border: 1px solid #d1d5db; padding: 12px; border-radius: 25px; outline: none; font-size: 16px; transition: 0.2s; }
+        input:focus { border-color: var(--primary); }
+        button { background: var(--primary); border: none; width: 45px; height: 45px; border-radius: 50%; color: white; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        /* Área de Reflexión (Chat) */
-        #conversation-vault {
-            flex: 1; overflow-y: auto; padding: 30px;
-            display: flex; flex-direction: column; gap: 25px;
-            scroll-behavior: smooth;
-        }
-
-        .entry {
-            max-width: 85%; padding: 20px; border-radius: 15px;
-            line-height: 1.8; font-size: 1.1rem;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .user-query {
-            align-self: flex-end; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .sage-response {
-            align-self: flex-start; background: rgba(20, 27, 45, 0.8);
-            border-left: 4px solid var(--nobel-gold);
-            box-shadow: 10px 10px 30px rgba(0,0,0,0.3);
-        }
-
-        /* Consola de Entrada */
-        .input-chamber {
-            background: var(--academic-slate);
-            padding: 25px; display: flex; gap: 15px;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        input {
-            flex: 1; background: transparent; border: 1px solid #475569;
-            padding: 15px; border-radius: 8px; color: white;
-            font-size: 1rem; outline: none; transition: 0.3s;
-        }
-
-        input:focus { border-color: var(--nobel-gold); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
-
-        button {
-            background: var(--nobel-gold); color: black;
-            border: none; padding: 0 30px; border-radius: 8px;
-            font-weight: bold; cursor: pointer; text-transform: uppercase;
-        }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Indicador de carga */
+        .typing { font-style: italic; font-size: 0.8rem; color: #6b7280; display: none; margin-bottom: 10px; margin-left: 20px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>LEXICON UNIVERSAL</h1>
-        <p style="font-size: 0.8rem; color: var(--nobel-gold); letter-spacing: 2px;">OMNISCIENCIA DIGITAL BY CAPACITIUMX</p>
+        <h1>El Sabio CapacitiumX</h1>
+        <p>Respuesta rápida, clara y de alto nivel</p>
     </div>
 
-    <div id="conversation-vault">
-        <div class="entry sage-response">
-            "Saludos, distinguido intelecto. Soy la suma del conocimiento humano destilado. ¿Qué misterio de la física, la medicina, la filosofía o el cosmos desea desentrañar hoy con rigor absoluto?"
-        </div>
+    <div id="chat-box">
+        <div class="bubble sage">¡Qué onda! Soy tu asesor personal. Pregúntame lo que sea: desde medicina hasta cómo arreglar un código. Te lo explico fácil y rápido.</div>
     </div>
+    
+    <div id="typing" class="typing">El Sabio está analizando...</div>
 
-    <div class="input-chamber">
-        <input type="text" id="userInput" placeholder="Formule su consulta erudita aquí..." onkeypress="if(event.key==='Enter') consultTheOracle()">
-        <button onclick="consultTheOracle()">Consultar</button>
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Pregúntame lo que quieras..." onkeypress="if(event.key==='Enter') askSage()">
+        <button onclick="askSage()">➔</button>
     </div>
 
     <script>
-        const sageAphorisms = [
-            "Desde una perspectiva ontológica, lo que usted plantea requiere un análisis de primer orden...",
-            "Procediendo con el rigor que la materia amerita, debemos considerar que...",
-            "Es imperativo diseccionar su consulta bajo la óptica de la evidencia empírica...",
-            "Si examinamos la teleología de su pregunta, hallamos que..."
-        ];
-
-        function consultTheOracle() {
+        function askSage() {
             const input = document.getElementById('userInput');
-            const vault = document.getElementById('conversation-vault');
+            const chat = document.getElementById('chat-box');
+            const typing = document.getElementById('typing');
             
-            if(!input.value) return;
+            if(!input.value.trim()) return;
 
-            // Inserción de la duda del usuario
+            // Mensaje del Usuario
             const userDiv = document.createElement('div');
-            userDiv.className = 'entry user-query';
+            userDiv.className = 'bubble user';
             userDiv.innerText = input.value;
-            vault.appendChild(userDiv);
+            chat.appendChild(userDiv);
 
-            const query = input.value;
+            const question = input.value.toLowerCase();
             input.value = '';
+            typing.style.display = 'block';
+            chat.scrollTop = chat.scrollHeight;
 
-            // Simulación de "Procesamiento Erudito"
+            // Simulación de respuesta inteligente
             setTimeout(() => {
+                typing.style.display = 'none';
                 const sageDiv = document.createElement('div');
-                sageDiv.className = 'entry sage-response';
+                sageDiv.className = 'bubble sage';
                 
-                // Respuesta construida con autoridad (Simulación de IA Aristocrática)
-                const intro = sageAphorisms[Math.floor(Math.random()*sageAphorisms.length)];
+                // Lógica de respuesta coloquial pero profunda
+                let response = "";
                 
-                sageDiv.innerHTML = `
-                    <small style="color:var(--nobel-gold)">REFLEXIÓN ACADÉMICA:</small><br>
-                    "${intro} Para responder a su inquietud sobre <strong>${query}</strong>, debo informarle que la solución requiere que usted copie este código en su entorno de IA preferido (como Gemini o GPT-4). 
-                    <br><br>
-                    Sin embargo, en mi capacidad actual, puedo discernir que la búsqueda de la verdad sobre este tema es el pilar de la civilización. ¿Desea que profundicemos en la base matemática o en la implicación ética de su pregunta?"
-                `;
-                
-                vault.appendChild(sageDiv);
-                vault.scrollTop = vault.scrollHeight;
-            }, 1000);
+                if(question.includes("hola") || question.includes("buenos")) {
+                    response = "¡Hola! Aquí ando listo. Suéltame esa duda que traes, por más difícil que sea la resolvemos.";
+                } else if (question.includes("quien eres") || question.includes("capacitium")) {
+                    response = "Soy el cerebro de CapacitiumX. Mi trabajo es darte respuestas nivel Premio Nobel pero explicadas para que no tengas que ir a buscar a otro lado.";
+                } else {
+                    response = `Mira, sobre **"${question}"**, te lo explico directo: Para darte la respuesta exacta con datos en tiempo real de medicina o ciencia profunda, necesito conectarme a mi servidor central (API). \n\nPero en resumen: lo más importante es entender la base. Si es un tema de salud, checa los síntomas; si es técnica, revisa el proceso. ¿Quieres que te desglose esto por pasos sencillos o nos vamos a lo profundo?`;
+                }
+
+                sageDiv.innerText = response;
+                chat.appendChild(sageDiv);
+                chat.scrollTop = chat.scrollHeight;
+            }, 1200);
         }
 
-        // Service Worker para instalación profesional
+        // Service Worker para que sea App Real
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIChlKSA9PiBlKTs=');
         }
