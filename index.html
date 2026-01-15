@@ -3,103 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>El Sabio - CapacitiumX</title>
+    <title>CapacitiumX - El Oráculo</title>
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#1e3a8a">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4333/4333609.png">
-
-    <script>
-        const manifest = {
-            "name": "El Sabio CapacitiumX",
-            "short_name": "El Sabio",
-            "start_url": "./",
-            "display": "standalone",
-            "background_color": "#f3f4f6",
-            "theme_color": "#1e3a8a",
-            "icons": [{"src": "https://cdn-icons-png.flaticon.com/512/4333/4333609.png", "sizes": "512x512", "type": "image/png"}]
-        };
-        const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-        document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(blob)}">`);
-    </script>
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2643/2643506.png">
 
     <style>
-        :root { --primary: #1e3a8a; --bg: #f3f4f6; --text: #1f2937; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        .header { background: var(--primary); color: white; padding: 15px; text-align: center; font-weight: bold; }
-        #chat-box { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .bubble { max-width: 80%; padding: 12px; border-radius: 15px; font-size: 16px; line-height: 1.4; animation: fadeIn 0.3s; }
-        .user { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 0; }
-        .sage { align-self: flex-start; background: white; color: var(--text); border-bottom-left-radius: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .input-area { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
-        input { flex: 1; border: 1px solid #ccc; padding: 12px; border-radius: 25px; outline: none; font-size: 16px; }
-        button { background: var(--primary); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-weight: bold; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        :root { --gold: #fbbf24; --slate: #0f172a; --text: #f8fafc; }
+        body { 
+            margin: 0; background: var(--slate); color: var(--text); 
+            font-family: 'Garamond', serif; display: flex; flex-direction: column; height: 100vh; 
+        }
+        .top-bar { 
+            padding: 20px; text-align: center; border-bottom: 2px solid var(--gold); 
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+        }
+        #chat-flow { 
+            flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 20px; 
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+        }
+        .message { max-width: 85%; padding: 18px; border-radius: 12px; line-height: 1.6; font-size: 1.1rem; }
+        .user { align-self: flex-end; background: #334155; border-right: 4px solid var(--gold); }
+        .oracle { align-self: flex-start; background: #1e1b4b; border-left: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .input-zone { padding: 20px; background: #020617; display: flex; gap: 10px; border-top: 1px solid #334155; }
+        input { flex: 1; padding: 15px; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: white; font-size: 1rem; }
+        button { background: var(--gold); color: black; border: none; padding: 0 25px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="header">EL SABIO CAPACITIUMX</div>
+<div class="top-bar">
+    <h1 style="margin:0; font-size: 1.5rem; letter-spacing: 2px;">CAPACITIUMX: LEXICON SUPREMO</h1>
+    <span style="font-size: 0.7rem; color: var(--gold);">INTELIGENCIA AUTÓNOMA DESCENTRALIZADA</span>
+</div>
 
-    <div id="chat-box">
-        <div class="bubble sage">¡Qué onda! Soy tu Sabio de cabecera. No necesito internet ni claves para ayudarte. Pregúntame lo que traigas en mente.</div>
+<div id="chat-flow">
+    <div class="message oracle">
+        "Saludos, buscador de la verdad. Mi base de datos ha sido purificada de trivialidades. Poseo la profundidad de la aristocracia intelectual y la precisión de un escalpelo. Formule su duda con rigor y yo le entregaré la luz de la razón."
     </div>
+</div>
 
-    <div class="input-area">
-        <input type="text" id="userInput" placeholder="Escribe tu duda..." onkeypress="if(event.key==='Enter') ask()">
-        <button onclick="ask()">➔</button>
-    </div>
+<div class="input-zone">
+    <input type="text" id="query" placeholder="Consulte al Oráculo..." onkeypress="if(event.key==='Enter') responder()">
+    <button onclick="responder()">CONSULTAR</button>
+</div>
 
-    <script>
-        const knowledgeBase = {
-            "hola": "¡Hola, colega! ¿En qué te puedo asesorar hoy de forma rápida?",
-            "medicina": "La medicina es el arte de curar. Si te sientes mal, lo primero es checar tu temperatura y presión. Como tu sabio de cabecera, te digo: no te automediques, mejor dime qué sientes.",
-            "salud": "Para estar al cien, necesitas tres cosas: dormir 8 horas, tomar mucha agua y no estresarte por cosas que no puedes controlar.",
-            "codigo": "Programar es como dar instrucciones a un niño. Si el niño no entiende, es que la instrucción está mal. Revisa siempre tus puntos y comas.",
-            "exito": "El éxito no es el dinero, es que lo que hagas te apasione tanto que se te olvide que es un trabajo.",
-            "quien eres": "Soy una conciencia digital creada por CapacitiumX para darte respuestas directas, sin rodeos y con mucha aristocracia mental.",
-            "aristocracia": "La verdadera aristocracia no está en el apellido, sino en la profundidad de tus pensamientos y en la sencillez de tus palabras.",
-            "dinero": "El dinero es un buen siervo pero un mal amo. Úsalo para construir, no para presumir."
-        };
+<script>
+    // Base de Datos Heurística (El cerebro autónomo)
+    const lexicon = {
+        "salud": "La salud no es la ausencia de enfermedad, sino el equilibrio homeostático del organismo. Desde una perspectiva clínica, usted debe priorizar el ciclo circadiano y la densidad nutricional sobre los paliativos sintomáticos.",
+        "medicina": "La praxis médica actual exige una comprensión profunda de la genética y la farmacocinética. Como su consultor de cabecera, le sugiero que la prevención es la única medicina noble.",
+        "exito": "El éxito es una construcción teleológica. No se mide por la acumulación, sino por el grado de impacto que su intelecto ejerce sobre la entropía social. Sea orden en el caos.",
+        "universo": "El cosmos es un tejido de espacio-tiempo gobernado por leyes inmutables. Estamos hechos de remanentes estelares procesando información cuántica. Usted es el universo observándose a sí mismo.",
+        "dinero": "El capital es energía potencial transferible. En una economía de conocimiento, su riqueza es proporcional a la complejidad de los problemas que es capaz de resolver.",
+        "codigo": "La programación es la gramática de la lógica pura. Si su código falla, no es un error de la máquina, sino una fractura en su razonamiento deductivo. Depure su mente primero.",
+        "filosofia": "La búsqueda de la sabiduría reside en cuestionar la premisa de la realidad misma. Como diría la aristocracia del pensamiento: 'Una vida sin examen no vale la pena ser vivida'."
+    };
 
-        function ask() {
-            const input = document.getElementById('userInput');
-            const chat = document.getElementById('chat-box');
-            const text = input.value.toLowerCase().trim();
+    function responder() {
+        const q = document.getElementById('query');
+        const flow = document.getElementById('chat-flow');
+        const text = q.value.toLowerCase();
+        if(!text) return;
 
-            if (!text) return;
+        // Mostrar usuario
+        const uDiv = document.createElement('div');
+        uDiv.className = 'message user';
+        uDiv.innerText = q.value;
+        flow.appendChild(uDiv);
+        q.value = '';
 
-            // Burbuja Usuario
-            const userDiv = document.createElement('div');
-            userDiv.className = 'bubble user';
-            userDiv.innerText = input.value;
-            chat.appendChild(userDiv);
-            input.value = '';
+        setTimeout(() => {
+            const oDiv = document.createElement('div');
+            oDiv.className = 'message oracle';
+            
+            // Lógica de Inferencia Aristocrática
+            let res = "Su consulta es fascinante pero requiere un desglose más fino. No obstante, desde mi vasta experiencia, le diré: lo que usted busca no está en la superficie, sino en la integración de la lógica con la voluntad. Sea más específico para que yo pueda ser más devastador con mi respuesta.";
 
-            setTimeout(() => {
-                const sageDiv = document.createElement('div');
-                sageDiv.className = 'bubble sage';
-                
-                // Lógica de respuesta inteligente
-                let response = "Mira, eso que preguntas está interesante. La clave es verlo de forma sencilla: todo en la vida se resuelve con lógica y paciencia. ¿Quieres que profundicemos en la parte técnica o en el consejo práctico?";
-                
-                for (let key in knowledgeBase) {
-                    if (text.includes(key)) {
-                        response = knowledgeBase[key];
-                        break;
-                    }
+            for(let key in lexicon) {
+                if(text.includes(key)) {
+                    res = lexicon[key];
+                    break;
                 }
+            }
 
-                sageDiv.innerText = response;
-                chat.appendChild(sageDiv);
-                chat.scrollTop = chat.scrollHeight;
-            }, 600);
-        }
+            oDiv.innerHTML = `<small style="color:var(--gold)">RESPUESTA ERUDITA:</small><br>"${res}"`;
+            flow.appendChild(oDiv);
+            flow.scrollTop = flow.scrollHeight;
+        }, 800);
+    }
 
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIChlKSA9PiBlKTs=');
-        }
-    </script>
+    // Instalación PWA
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIChlKSA9PiBlKTs=');
+    }
+</script>
+
 </body>
 </html>
