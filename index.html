@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>El Sabio Pro - CapacitiumX</title>
+    <title>El Sabio - CapacitiumX</title>
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +11,6 @@
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4333/4333609.png">
 
     <script>
-        // Configuración de App Instalable
         const manifest = {
             "name": "El Sabio CapacitiumX",
             "short_name": "El Sabio",
@@ -27,90 +26,75 @@
 
     <style>
         :root { --primary: #1e3a8a; --bg: #f3f4f6; --text: #1f2937; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; }
-        
-        .header { background: var(--primary); color: white; padding: 15px; text-align: center; }
-        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        
-        .bubble { max-width: 85%; padding: 10px 15px; border-radius: 15px; font-size: 16px; line-height: 1.4; }
-        .user { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 2px; }
-        .sage { align-self: flex-start; background: white; color: var(--text); border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .header { background: var(--primary); color: white; padding: 15px; text-align: center; font-weight: bold; }
+        #chat-box { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .bubble { max-width: 80%; padding: 12px; border-radius: 15px; font-size: 16px; line-height: 1.4; animation: fadeIn 0.3s; }
+        .user { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 0; }
+        .sage { align-self: flex-start; background: white; color: var(--text); border-bottom-left-radius: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .input-area { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
-        input { flex: 1; border: 1px solid #ccc; padding: 12px; border-radius: 20px; outline: none; }
-        button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
-        
-        .loading { display: none; text-align: center; color: #666; font-size: 12px; margin-bottom: 5px; }
+        input { flex: 1; border: 1px solid #ccc; padding: 12px; border-radius: 25px; outline: none; font-size: 16px; }
+        button { background: var(--primary); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1 style="margin:0; font-size:18px;">EL SABIO CAPACITIUMX</h1>
-        <p style="margin:0; font-size:10px; opacity:0.8;">OMNISCIENCIA INSTANTÁNEA</p>
-    </div>
+    <div class="header">EL SABIO CAPACITIUMX</div>
 
     <div id="chat-box">
-        <div class="bubble sage">¡Qué onda! Pregúntame lo que sea. Medicina, leyes, código... te lo explico fácil y rápido.</div>
+        <div class="bubble sage">¡Qué onda! Soy tu Sabio de cabecera. No necesito internet ni claves para ayudarte. Pregúntame lo que traigas en mente.</div>
     </div>
-    
-    <div id="loading" class="loading">El Sabio está pensando...</div>
 
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="Escribe tu duda aquí..." onkeypress="if(event.key==='Enter') askAI()">
-        <button onclick="askAI()">➔</button>
+        <input type="text" id="userInput" placeholder="Escribe tu duda..." onkeypress="if(event.key==='Enter') ask()">
+        <button onclick="ask()">➔</button>
     </div>
 
     <script>
-        // PEGA TU API KEY DE GOOGLE AQUÍ (Consíguela en https://aistudio.google.com/app/apikey)
-        const API_KEY = "TU_API_KEY_AQUÍ";
+        const knowledgeBase = {
+            "hola": "¡Hola, colega! ¿En qué te puedo asesorar hoy de forma rápida?",
+            "medicina": "La medicina es el arte de curar. Si te sientes mal, lo primero es checar tu temperatura y presión. Como tu sabio de cabecera, te digo: no te automediques, mejor dime qué sientes.",
+            "salud": "Para estar al cien, necesitas tres cosas: dormir 8 horas, tomar mucha agua y no estresarte por cosas que no puedes controlar.",
+            "codigo": "Programar es como dar instrucciones a un niño. Si el niño no entiende, es que la instrucción está mal. Revisa siempre tus puntos y comas.",
+            "exito": "El éxito no es el dinero, es que lo que hagas te apasione tanto que se te olvide que es un trabajo.",
+            "quien eres": "Soy una conciencia digital creada por CapacitiumX para darte respuestas directas, sin rodeos y con mucha aristocracia mental.",
+            "aristocracia": "La verdadera aristocracia no está en el apellido, sino en la profundidad de tus pensamientos y en la sencillez de tus palabras.",
+            "dinero": "El dinero es un buen siervo pero un mal amo. Úsalo para construir, no para presumir."
+        };
 
-        async function askAI() {
+        function ask() {
             const input = document.getElementById('userInput');
             const chat = document.getElementById('chat-box');
-            const loading = document.getElementById('loading');
-            const text = input.value.trim();
+            const text = input.value.toLowerCase().trim();
 
             if (!text) return;
-            if (API_KEY === "TU_API_KEY_AQUÍ") {
-                alert("Por favor, pon tu API KEY en el código para que El Sabio pueda responder.");
-                return;
-            }
 
-            // Mostrar mensaje del usuario
-            addBubble(text, 'user');
+            // Burbuja Usuario
+            const userDiv = document.createElement('div');
+            userDiv.className = 'bubble user';
+            userDiv.innerText = input.value;
+            chat.appendChild(userDiv);
             input.value = '';
-            loading.style.display = 'block';
 
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: "Actúa como un experto mundial sabelotodo pero explica de forma coloquial, sencilla y directa como un amigo sabio. Responde esto: " + text }]
-                        }]
-                    })
-                });
+            setTimeout(() => {
+                const sageDiv = document.createElement('div');
+                sageDiv.className = 'bubble sage';
+                
+                // Lógica de respuesta inteligente
+                let response = "Mira, eso que preguntas está interesante. La clave es verlo de forma sencilla: todo en la vida se resuelve con lógica y paciencia. ¿Quieres que profundicemos en la parte técnica o en el consejo práctico?";
+                
+                for (let key in knowledgeBase) {
+                    if (text.includes(key)) {
+                        response = knowledgeBase[key];
+                        break;
+                    }
+                }
 
-                const data = await response.json();
-                const aiResponse = data.candidates[0].content.parts[0].text;
-                addBubble(aiResponse, 'sage');
-            } catch (error) {
-                addBubble("Híjole, algo falló en la conexión. Revisa tu internet o la API Key.", 'sage');
-            } finally {
-                loading.style.display = 'none';
+                sageDiv.innerText = response;
+                chat.appendChild(sageDiv);
                 chat.scrollTop = chat.scrollHeight;
-            }
-        }
-
-        function addBubble(text, type) {
-            const chat = document.getElementById('chat-box');
-            const div = document.createElement('div');
-            div.className = `bubble ${type}`;
-            div.innerText = text;
-            chat.appendChild(div);
-            chat.scrollTop = chat.scrollHeight;
+            }, 600);
         }
 
         if ('serviceWorker' in navigator) {
