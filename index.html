@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lexicon Universal - CapacitiumX</title>
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/201/201818.png">
+
+    <script>
+        const manifest = {
+            "name": "Lexicon Universal Pro",
+            "short_name": "Lexicon",
+            "start_url": "./",
+            "display": "standalone",
+            "background_color": "#0f172a",
+            "theme_color": "#1e293b",
+            "icons": [{"src": "https://cdn-icons-png.flaticon.com/512/201/201818.png", "sizes": "512x512", "type": "image/png"}]
+        };
+        const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+        document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(blob)}">`);
+    </script>
+
+    <style>
+        :root {
+            --aristocracy-blue: #0f172a;
+            --nobel-gold: #d4af37;
+            --academic-slate: #1e293b;
+            --ivory: #f8fafc;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            color: var(--ivory);
+            font-family: 'Georgia', serif;
+            display: flex; flex-direction: column;
+            height: 100vh; overflow: hidden;
+        }
+
+        .header {
+            padding: 40px 20px; text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.2rem; letter-spacing: 4px; font-weight: 300;
+            color: var(--nobel-gold); margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* Área de Reflexión (Chat) */
+        #conversation-vault {
+            flex: 1; overflow-y: auto; padding: 30px;
+            display: flex; flex-direction: column; gap: 25px;
+            scroll-behavior: smooth;
+        }
+
+        .entry {
+            max-width: 85%; padding: 20px; border-radius: 15px;
+            line-height: 1.8; font-size: 1.1rem;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .user-query {
+            align-self: flex-end; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sage-response {
+            align-self: flex-start; background: rgba(20, 27, 45, 0.8);
+            border-left: 4px solid var(--nobel-gold);
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Consola de Entrada */
+        .input-chamber {
+            background: var(--academic-slate);
+            padding: 25px; display: flex; gap: 15px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        input {
+            flex: 1; background: transparent; border: 1px solid #475569;
+            padding: 15px; border-radius: 8px; color: white;
+            font-size: 1rem; outline: none; transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--nobel-gold); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+
+        button {
+            background: var(--nobel-gold); color: black;
+            border: none; padding: 0 30px; border-radius: 8px;
+            font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>LEXICON UNIVERSAL</h1>
+        <p style="font-size: 0.8rem; color: var(--nobel-gold); letter-spacing: 2px;">OMNISCIENCIA DIGITAL BY CAPACITIUMX</p>
+    </div>
+
+    <div id="conversation-vault">
+        <div class="entry sage-response">
+            "Saludos, distinguido intelecto. Soy la suma del conocimiento humano destilado. ¿Qué misterio de la física, la medicina, la filosofía o el cosmos desea desentrañar hoy con rigor absoluto?"
+        </div>
+    </div>
+
+    <div class="input-chamber">
+        <input type="text" id="userInput" placeholder="Formule su consulta erudita aquí..." onkeypress="if(event.key==='Enter') consultTheOracle()">
+        <button onclick="consultTheOracle()">Consultar</button>
+    </div>
+
+    <script>
+        const sageAphorisms = [
+            "Desde una perspectiva ontológica, lo que usted plantea requiere un análisis de primer orden...",
+            "Procediendo con el rigor que la materia amerita, debemos considerar que...",
+            "Es imperativo diseccionar su consulta bajo la óptica de la evidencia empírica...",
+            "Si examinamos la teleología de su pregunta, hallamos que..."
+        ];
+
+        function consultTheOracle() {
+            const input = document.getElementById('userInput');
+            const vault = document.getElementById('conversation-vault');
+            
+            if(!input.value) return;
+
+            // Inserción de la duda del usuario
+            const userDiv = document.createElement('div');
+            userDiv.className = 'entry user-query';
+            userDiv.innerText = input.value;
+            vault.appendChild(userDiv);
+
+            const query = input.value;
+            input.value = '';
+
+            // Simulación de "Procesamiento Erudito"
+            setTimeout(() => {
+                const sageDiv = document.createElement('div');
+                sageDiv.className = 'entry sage-response';
+                
+                // Respuesta construida con autoridad (Simulación de IA Aristocrática)
+                const intro = sageAphorisms[Math.floor(Math.random()*sageAphorisms.length)];
+                
+                sageDiv.innerHTML = `
+                    <small style="color:var(--nobel-gold)">REFLEXIÓN ACADÉMICA:</small><br>
+                    "${intro} Para responder a su inquietud sobre <strong>${query}</strong>, debo informarle que la solución requiere que usted copie este código en su entorno de IA preferido (como Gemini o GPT-4). 
+                    <br><br>
+                    Sin embargo, en mi capacidad actual, puedo discernir que la búsqueda de la verdad sobre este tema es el pilar de la civilización. ¿Desea que profundicemos en la base matemática o en la implicación ética de su pregunta?"
+                `;
+                
+                vault.appendChild(sageDiv);
+                vault.scrollTop = vault.scrollHeight;
+            }, 1000);
+        }
+
+        // Service Worker para instalación profesional
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIChlKSA9PiBlKTs=');
+        }
+    </script>
+</body>
+</html>
